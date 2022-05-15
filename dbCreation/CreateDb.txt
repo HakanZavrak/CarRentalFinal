@@ -1,0 +1,103 @@
+CREATE TABLE brand(
+    ID INT NOT NULL AUTO_INCREMENT,
+    bran_name VARCHAR(65) NOT NULL,
+    brand_star INT NOT NULL,
+    UNIQUE KEY(bran_name),
+    PRIMARY KEY(ID)
+    );
+
+CREATE TABLE cartype(
+    ID INT NOT NULL AUTO_INCREMENT,
+    type ENUM('SUPER','MODERN','CLASSIC'),
+    speed ENUM('FAST','FASTER','SLOW','SLOWER'),
+    PRIMARY KEY(ID)
+);  
+
+CREATE TABLE gear(
+    ID INT NOT NULL AUTO_INCREMENT,
+    gear_type ENUM('Automatical','Manual','Half'),
+    PRIMARY KEY(ID)
+);
+
+CREATE TABLE engine(
+    ID INT NOT NULL AUTO_INCREMENT,
+    engine_type ENUM('DIESEL','GAS','ELECTRICAL','URANIUM'),
+    PRIMARY KEY(ID)
+);
+
+CREATE TABLE color(
+    ID INT NOT NULL AUTO_INCREMENT,
+    color ENUM('WHITE','BLACK','GREEN','RED','BLUE'),
+    metal_type ENUM('CARBON','METALLIC','MATTE','POX'),
+    PRIMARY KEY(ID)
+);
+
+CREATE TABLE location(
+    ID INT NOT NULL AUTO_INCREMENT,
+    location VARCHAR(35),
+    PRIMARY KEY(ID),
+    UNIQUE KEY(location)
+    );
+    
+CREATE TABLE car(
+    ID INT NOT NULL AUTO_INCREMENT,
+    bran_id INT NOT NULL,
+    modified ENUM('YES','NO'),
+    damage_status ENUM ('DAMAGED','HALF DAMAGED','CLEAR','VERY CLEAR'),
+    type_id INT NOT NULL,
+    gear_id INT NOT NULL,
+    engine_id INT NOT NULL,
+    name VARCHAR(35) NOT NULL,
+    color_id INT NOT NULL,
+    year VARCHAR(4),
+    car_usage INT NOT NULL,
+    pricing INT NOT NULL,
+    location_id INT NOT NULL,
+    car_plate VARCHAR(15) NOT NULL,
+    PRIMARY KEY(ID),
+    rent_status INT DEFAULT 0,
+    UNIQUE KEY(name),
+    FOREIGN KEY(bran_id) REFERENCES brand(ID),
+    FOREIGN KEY(type_id) REFERENCES cartype(ID),
+    FOREIGN KEY(gear_id) REFERENCES gear(ID),
+    FOREIGN KEY(engine_id) REFERENCES engine(ID),
+    FOREIGN KEY(color_id) REFERENCES color(ID),
+    FOREIGN KEY(location_id) REFERENCES location(ID)
+);
+
+CREATE TABLE customer(
+    ID INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(30) NOT NULL,
+    email VARCHAR(30) NOT NULL,
+    id_no VARCHAR(11) NOT NULL,
+    DOB DATE,
+    license VARCHAR(15),
+    custom_password VARCHAR(255),
+    custom_status INT DEFAULT 1,
+    PRIMARY KEY(ID),
+    UNIQUE KEY(email),
+    UNIQUE KEY(license)
+);
+
+CREATE TABLE rented_car(
+    custom_id INT NOT NULL AUTO_INCREMENT,
+    car_id INT NOT NULL,
+    pick_up DATE NOT NULL,
+    drop_off DATE NOT NULL,
+    custom_damage ENUM ('YES','NO'),
+    status ENUM('ACTIVE', 'PAST', 'CANCELLED'),
+    PRIMARY KEY(custom_id,car_id,pick_up,drop_off),
+    FOREIGN KEY(custom_id) REFERENCES customer(ID),
+    FOREIGN KEY(car_id) REFERENCES car(ID)
+    );
+
+CREATE TABLE admin(
+        ID INT NOT NULL AUTO_INCREMENT,
+        name VARCHAR(30) NOT NULL,
+        email VARCHAR(30) NOT NULL,
+        admin_pass VARCHAR(255) NOT NULL,
+        admin_status INT DEFAULT 1,
+        adminofmonth ENUM ('YES','NO'),
+        UNIQUE KEY(email),
+        PRIMARY KEY(ID)
+        );
