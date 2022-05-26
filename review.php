@@ -32,21 +32,29 @@ if (($_SERVER["REQUEST_METHOD"] ?? 'POST') == "POST") {
         $connect->close();
         die("Connection failed: " . $connect->connect_error);
     }
-    if(empty($_POST["textArea1"]) || empty($_POST["subject"]) || empty($_POST["sendEmail"]) || empty($_POST["name"]) || empty($_POST["phoneNum"])){
+    if(isset($_POST['contactButton'])){
+        $email = $_POST["sendEmail"];
+        $name = $_POST["name"];
+        $phoneNum = $_POST["phoneNum"];
+        $message = $_POST["textArea1"];
+
+    }
+
+
+    if(empty($_POST["textArea1"]) ||  empty($_POST["sendEmail"]) || empty($_POST["name"]) || empty($_POST["phoneNum"])){
         $err = "You have too fill the all blanks.";
     }
-    $email = $_POST["sendEmail"];
-    $name = $_POST["name"];
-    $phoneNum = $_POST["phoneNum"];
-    $subject = $_POST["subject"];
-    $message = $_POST["textArea1"];
 
-    $sql = "INSERT INTO contact(email,phoneNum,name,title,message) VALUES(?,?,?,?,?)";
+
+ 
+
+    $sql = "INSERT INTO review(email,phoneNum,name,message) VALUES(?,?,?,?)";
     $stmt = $connect->prepare($sql);
-    $stmt->bind_param("sssss",$email,$phoneNum,$name,$subject,$message);
+    $stmt->bind_param("ssss",$email,$phoneNum,$name,$message);
     $stmt->execute();
     $stmt->close();
     $connect->close();
+    
 }
 ?>
     
@@ -60,14 +68,14 @@ if (($_SERVER["REQUEST_METHOD"] ?? 'POST') == "POST") {
     </h1>
 
     <div class="row">
-        <form action="index.php" method="post">
+        <form action="review.php" method="post">
             <div class="inputBox">
                 <input type="text" name="name" placeholder="Name">
                 <input type="email" name="sendEmail" placeholder="Email">
             </div>
             <div class="inputBox">
                 <input type="number" name="phoneNum" placeholder="Phone Number">
-                <input type="text" name="subject" placeholder="Title">
+                
             </div>
             <textarea placeholder="Your Message" name="textArea1" id="" cols="30" rows="10"></textarea>
             <input type="submit" name="contactButton"class="btn" value="Send Message">
