@@ -19,6 +19,8 @@ if ($conn->connect_error) {
 $locationQuery = "SELECT ID,location FROM location";
 $locationResult = mysqli_query($conn,$locationQuery);
 $dropLocationResult = mysqli_query($conn,$locationQuery);
+$typequery="SELECT * FROM cartype";
+$typeresult=mysqli_query($conn,$typequery);
 if (($_SERVER["REQUEST_METHOD"] ?? 'POST') == "POST") {
 
     function search(){
@@ -42,6 +44,7 @@ if (($_SERVER["REQUEST_METHOD"] ?? 'POST') == "POST") {
                     $_SESSION["dropLocation"] = $_POST["dropLocation"];
                     $_SESSION["pickUp"] = $_POST["pickUp"];
                     $_SESSION["dropOff"] = $_POST["dropOff"];
+                    $_SESSION["type"]=$_POST["type"];
                     header("Location:selection.php");
                 }
             }
@@ -156,6 +159,15 @@ if (($_SERVER["REQUEST_METHOD"] ?? 'POST') == "POST") {
                                 <option value="" selected> Location</option>
                                 <?php while ($row2 = mysqli_fetch_array($dropLocationResult)): ?>
                                     <option value="<?php echo $row2['ID']; ?>"><?php echo $row2['location']; ?></option>
+                                <?php endwhile; ?>
+                            </select>
+            </div>
+            <div class="inputBox">
+                <h3>Car type</h3>
+                <select class="form-control" name="type">
+                                <option value="" selected> Type</option>
+                                <?php while ($row3 = mysqli_fetch_array($typeresult)): ?>
+                                    <option value="<?php echo $row3['ID']; ?>"><?php echo $row3['type']; echo " / "; echo $row3['speed']; ?></option>
                                 <?php endwhile; ?>
                             </select>
             </div>

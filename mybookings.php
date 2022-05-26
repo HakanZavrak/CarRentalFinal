@@ -91,13 +91,14 @@ if ($connect->connect_error) {
                             <td>Date From</td>
                             <td>Date To</td>
                             <td>status</td>
+                            <td></td>
                         </tr>
 
                     </thead>
                 <tbody>
                 <?php
-                $sql="SELECT c.name,l.location,c.pricing,cc.pick_up,cc.drop_off,cc.status FROM car c,location l,rented_Car cc 
-                WHERE c.ID=cc.car_id AND $id=cc.custom_id AND l.ID=c.location_id ";
+                $sql="SELECT c.name,l.location,cc.totalPrice,cc.pick_up,cc.drop_off,cc.status,cc.custom_id,cc.car_id FROM car c,location l,rented_Car cc 
+                WHERE c.ID=cc.car_id AND $id=cc.custom_id AND l.ID=c.location_id ORDER BY cc.drop_off ";
                 $cars = $connect->query($sql);
                 if (!$cars) {
                     die("Invalid Query: " . $connect->error);
@@ -107,11 +108,14 @@ if ($connect->connect_error) {
                                  
                                   <td>" . $row['name'] . "</td>
                                   <td>" . $row['location'] . "</td>
-                                  <td>" . $row['pricing'] . "</td>
+                                  <td>" . $row['totalPrice'] . "</td>
                                   <td>" . $row['pick_up'] . "</td>
                                   <td>" . $row['drop_off'] . "</td>
                                   <td>" . $row['status'] . "</td>
+                                  <td> <a name='remove'  href=\"deletebooking.php?id=".$row['car_id']."\" class='btn'><p class='fas fa-trash'></p>Cancel Reservation</a></td>
+                                  <td> <a name='review'  href=\"review.php?id=".$row['custom_id']."\" class='btn'><p class='fas fa-bolt'></p>Review</a></td>
                                   </tr>";
+                                  
                 }?>
                 </tbody>
             </table>

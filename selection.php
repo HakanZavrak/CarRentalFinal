@@ -101,29 +101,37 @@ if ($connect->connect_error) {
                 
                 <th scope="col">Car Name</th>
                 <th scope="col">Location</th>
-                <th scope="col">Price</th>
+                <th scope="col">Daily Price</th>
+                <th scope="col">Car Type</th>
                 <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <?php
+            
+            $type = $_SESSION["type"];
             $city = $_SESSION["dropLocation"];
             $pickUpDate = $_SESSION["pickUp"];
             $deliveryDate = $_SESSION["dropOff"];
 
-            $sql = 'SELECT c.* ,l.location FROM car c,location l
-WHERE l.ID=c.location_id AND c.ID NOT IN(SELECT cc.car_id FROM rented_car cc WHERE c.ID=cc.car_id AND "' . $pickUpDate . '" BETWEEN cc.pick_up AND cc.drop_off
+
+            $sql = 'SELECT c.* ,l.location,ct.type FROM car c,location l,cartype ct
+WHERE l.ID=c.location_id AND ct.ID=c.type_id AND ct.ID="'.$type.'"AND l.ID="'.$city.'" AND c.ID NOT IN(SELECT cc.car_id FROM rented_car cc WHERE c.ID=cc.car_id AND "' . $pickUpDate . '" BETWEEN cc.pick_up AND cc.drop_off
                     OR ' . $deliveryDate .  ' BETWEEN cc.pick_up AND cc.drop_off)';
             $cars = $connect->query($sql);
             if (!$cars) {
                 die("Invalid Query: " . $connect->error);
             }
+
             while ($row = $cars->fetch_assoc()) {
+               
                 echo "<tr>
-                                   
+                <td class='w-25'> <img class='img-fluid img-thumbnail' src=C:/xampp/htdocs/wen/images/" . $row['image'] . "></td> 
+               
                                   <td>" . $row['name'] . "</td>
                                   <td>" . $row['location'] . "</td>
                                   <td>" . $row['pricing'] . "</td>
+                                  <td>" . $row['type'] . "</td>
                                   <td><a class='btn btn-warning' href=\"payment.php?id=".$row['ID']."\">Buy</a></td>
                                   </tr>";
             }?>
