@@ -72,10 +72,10 @@ if (isset($_POST['uemail']) && isset($_POST['password'])) {
      	<?php if (isset($_GET['error'])) { ?>
      		<p class="error"><?php echo $_GET['error']; ?></p>
      	<?php } ?>
-     	<label>User Name</label>
-     	<input type="text" name="uemail" placeholder="User Name"><br>
+     	<label>Admin Email</label>
+     	<input type="text" name="uemail" placeholder="Admin Email"><br>
 
-     	<label>User Name</label>
+     	<label>Admin Name</label>
      	<input type="password" name="password" placeholder="Password"><br>
 
      	<button type="submit">Login</button>

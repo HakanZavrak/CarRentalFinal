@@ -156,11 +156,7 @@ if (($_SERVER["REQUEST_METHOD"] ?? 'POST') == "POST") {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>
-        document.querySelector('.img__btn').addEventListener('click', function () {
-          document.querySelector('.cont').classList.toggle('s--signup');
-        });
-      </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Car rental site</title>
@@ -218,12 +214,12 @@ body {
 <header>
         <div id="menu-bar" class="fas fa-bars"></div>
     
-        <a href="../index.html" class="logo"><color>HZ</color> CAR RENTAL</a>
+        <a href="../admin.php" class="logo"><color>HZ</color> CAR RENTAL</a>
     
         <nav class="navbar">
-            <a href="admin.html">Home</a>
-            <a href="#actives">Orders</a>
-            <a href="admincars.html">Vehicles</a>
+            <a href="admin.php">Home</a>
+            <a href="admin.php#actives">Orders</a>
+            <a href="admincars.php">Vehicles</a>
         </nav>
     
         <div class="icons">
@@ -341,25 +337,27 @@ body {
     <section class="vehicles" id="vehicles">
     <div class="box-container">
 
-        <div class="box">
+        <div class="box" style='padding:30px;'>
             <div class="row">
             <?php $carQuery = "SELECT * FROM car";
+             $counter = 2;
             $cars = $conn->query($carQuery);
             if (!$cars) {
                 die("Invalid Query: " . $connect->error);
             }
             while ($row = $cars->fetch_assoc()) {
-                echo"<div class='column>
-                <div class='card' style='width: 18rem;'>
-                <img class='card-img-top' src=../images/".$row['image'].">
-                <div class='card-body'>
-                  <h5 class='card-title'>".$row['name']."</h5>
-                  <h5 class='card-title'>".$row['pricing']."</h5>
-                  <a href='#' class='btn btn-danger'>Delete</a>
+                echo"<div class='box'>
+                <img src=../images/".$row['image'].">
+                <div class='content'>
+                    <h3> <i class='fas fa-car'></i>".$row['name']." </h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, nam!</p>
+                    <div class='price'> $".$row['pricing']." <color>$180.00</color> </div>
+                    <a name='remove'  href=\"delete.php?id=".$row['ID']."\" class='btn'><p class='fas fa-trash'></p>Remove this car</a>  
+                    <a name='update'  href=\"newupdate.php?id=".$row['ID']."\" class='btn'><p class='fas fa-trash'></p> Update Car</a>                 
+                </div>   
+                </div>";
 
-                </div>
-              </div>
-              </div>";
+
             }?>
     </div>
     </div>
@@ -381,9 +379,9 @@ body {
             </div>
             <div class="box">
                 <h3>Are you lost</h3>
-                <a href="admin.html">home</a>
-                <a href="admin.html#actives">Orders</a>
-                <a href="admincars.html">vehicles</a>
+                <a href="admin.php">home</a>
+                <a href="admin.php#actives">Orders</a>
+                <a href="admincars.php">vehicles</a>
             </div>
             <div class="box">
                 <h3>Socials</h3>

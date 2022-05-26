@@ -19,8 +19,10 @@ if ($connect->connect_error) {
 }
 $rentedCarQuery = "SELECT * from rented_car";
 $totalCarQuery = "SELECT * from car";
+
 $totalCustomerQuery = "SELECT * from customer";
 $rentedCarResult = mysqli_query($connect,$rentedCarQuery);
+
 
 $totalCarResult = mysqli_query($connect,$totalCarQuery);
 $totalCar = mysqli_num_rows($totalCarResult);
@@ -94,11 +96,27 @@ $connect = new mysqli($hostname, $username, $password, $databaseName);
             <div class="card">
                 <div> 
                 <h2 class="d-flex align-items-center mb-0">
+                  <?php 
+                  $totalincome="SELECT SUM(totalPrice) FROM rented_car";
+                  $totalmoney = mysqli_query($connect,$totalincome);
+                  $row = mysqli_fetch_array($totalmoney);
+                  echo $row[0] ?> </h2>
+                    <div class="cardName">Income</div>
+                </div>
+                <div class="icons">
+                    <ikon class="fas fa-dollar-sign"> </ikon>
+                </div>
+            </div>
+        </div>
+        <div class="cardBox">
+            <div class="card">
+                <div> 
+                <h2 class="d-flex align-items-center mb-0">
                                                 <?php echo $totalCustomer ?>
                     <div class="cardName">Active Users</div>
                 </div>
                 <div class="icons">
-                    <ikon class="fas fa-dollar-sign"> </ikon>
+                    <ikon class="fas fa-users"> </ikon>
                 </div>
             </div>
         </div>
@@ -114,18 +132,18 @@ $connect = new mysqli($hostname, $username, $password, $databaseName);
                     <thead>
                         <tr>
                             <td>name</td>
-                            <td>dateFrom</td>
-                            <td>dateTo</td>
-                            <td>price</td>
-                            <td>car ID</td>
+                            <td>Location</td>
+                            <td>Price</td>
+                            <td>DateFrom</td>
+                            <td>DateTo</td>
                             <td>status</td>
                         </tr>
 
                     </thead>
                     <tbody>
                 <?php
-                $sql="SELECT c.name,l.location,c.pricing,cc.pick_up,cc.drop_off,cc.status FROM car c,location l,rented_Car cc 
-                WHERE c.ID=cc.car_id  AND l.ID=c.location_id ";
+                $sql="SELECT c.name,l.location,cc.totalPrice,cc.pick_up,cc.drop_off,cc.status FROM car c,location l,rented_Car cc 
+                WHERE c.ID=cc.car_id  AND l.ID=c.location_id ORDER BY cc.pick_up";
                 $cars = $connect->query($sql);
                 if (!$cars) {
                     die("Invalid Query: " . $connect->error);
@@ -135,7 +153,7 @@ $connect = new mysqli($hostname, $username, $password, $databaseName);
                                  
                                   <td>" . $row['name'] . "</td>
                                   <td>" . $row['location'] . "</td>
-                                  <td>" . $row['pricing'] . "</td>
+                                  <td>" . $row['totalPrice'] . "</td>
                                   <td>" . $row['pick_up'] . "</td>
                                   <td>" . $row['drop_off'] . "</td>
                                   <td>" . $row['status'] . "</td>
