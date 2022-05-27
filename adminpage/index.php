@@ -75,7 +75,7 @@ if (isset($_POST['uemail']) && isset($_POST['password'])) {
      	<label>Admin Email</label>
      	<input type="text" name="uemail" placeholder="Admin Email"><br>
 
-     	<label>Admin Name</label>
+     	<label>Admin Password</label>
      	<input type="password" name="password" placeholder="Password"><br>
 
      	<button type="submit">Login</button>

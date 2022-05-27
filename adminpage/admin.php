@@ -142,8 +142,8 @@ $connect = new mysqli($hostname, $username, $password, $databaseName);
                     </thead>
                     <tbody>
                 <?php
-                $sql="SELECT c.name,l.location,cc.totalPrice,cc.pick_up,cc.drop_off,cc.status FROM car c,location l,rented_Car cc 
-                WHERE c.ID=cc.car_id  AND l.ID=c.location_id ORDER BY cc.pick_up";
+                $sql="SELECT l.location,cc.totalPrice,cc.pick_up,cc.drop_off,cc.status,cu.name FROM car c,customer cu,location l,rented_Car cc 
+                WHERE c.ID=cc.car_id AND cu.ID=cc.custom_id AND l.ID=c.location_id ORDER BY cc.pick_up";
                 $cars = $connect->query($sql);
                 if (!$cars) {
                     die("Invalid Query: " . $connect->error);

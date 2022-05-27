@@ -110,7 +110,7 @@ if ($connect->connect_error) {
             <?php
             
             $type = $_SESSION["type"];
-            $city = $_SESSION["dropLocation"];
+            $city = $_SESSION["addLocation"];
             $pickUpDate = $_SESSION["pickUp"];
             $deliveryDate = $_SESSION["dropOff"];
 
@@ -126,7 +126,7 @@ WHERE l.ID=c.location_id AND ct.ID=c.type_id AND ct.ID="'.$type.'"AND l.ID="'.$c
             while ($row = $cars->fetch_assoc()) {
                
                 echo "<tr>
-                <td class='w-25'> <img class='img-fluid img-thumbnail' src=C:/xampp/htdocs/wen/images/" . $row['image'] . "></td> 
+                
                
                                   <td>" . $row['name'] . "</td>
                                   <td>" . $row['location'] . "</td>
