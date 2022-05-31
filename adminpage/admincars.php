@@ -17,7 +17,7 @@ $addingError=null;
 $newImageName=null;   
 $carBrandQuery = "SELECT * FROM brand";
 $carBrandResult = mysqli_query($conn,$carBrandQuery);
-
+$yeniloc= "SELECT * FROM location";
 $carGearQuery = "SELECT * FROM gear";
 $carTypeQuery = "SELECT * FROM cartype";
 $carEngineQuery = "SELECT * FROM engine";
@@ -28,6 +28,7 @@ $carTypeResult = mysqli_query($conn,$carTypeQuery);
 $carEngineResult = mysqli_query($conn,$carEngineQuery);
 $carColorResult = mysqli_query($conn,$carColorQuery);
 $carLocationResult = mysqli_query($conn,$carLocationQuery);
+$newlocres=mysqli_query($conn,$yeniloc);
 
 
 if (($_SERVER["REQUEST_METHOD"] ?? 'POST') == "POST") {
@@ -150,6 +151,8 @@ if (($_SERVER["REQUEST_METHOD"] ?? 'POST') == "POST") {
    if(isset($_POST["addCar"])){
        addCar();
    }
+
+   
 
 }
 ?>
@@ -305,6 +308,7 @@ body {
                                 <?php endwhile; ?>
                             </select>
                     </div>
+                    
                     <div class="inputBox">
                     <select class="form-control" name="location">
                                 <option value="" selected> Location</option>
@@ -321,6 +325,7 @@ body {
                         <h3>Car Year</h3>
                         <input type="text" name="year" placeholder="Car Year">
                     </div>
+                    
                     <div class="form-floating mb-3">
                             <div class="input-group file" id="carImage">
                                 <input type="file" class="form-control" name="carImage" id="carImage">
@@ -335,9 +340,31 @@ body {
 
     </section>
     <section class="vehicles" id="vehicles">
+        
+        
     <div class="box-container">
+        
+        
 
         <div class="box" style='padding:30px;'>
+        <div class="inputBox">
+                    <select class="form-control" name="location">
+                                <option value="" selected> Location</option>
+                                <?php while ($row2 = mysqli_fetch_array($newlocres)): ?>
+                                    <option value="<?php echo $row2['ID']; ?>"><?php echo $row2['location']; ?></option>
+                                <?php endwhile; ?>
+                            </select>
+                    </div>
+                    
+                    <?php              while ($row = $newlocres->fetch_assoc()) {
+               
+               echo "<tr>
+                                 <td><a class='btn btn-warning' href=\"alllocations.php?id=".$row['ID']."\">Buy</a></td>
+                                 </tr>";
+           }?>
+
+        
+
             <div class="row">
             <?php $carQuery = "SELECT * FROM car";
              $counter = 2;
@@ -353,7 +380,8 @@ body {
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, nam!</p>
                     <div class='price'> $".$row['pricing']." <color>$180.00</color> </div>
                     <a name='remove'  href=\"delete.php?id=".$row['ID']."\" class='btn'><p class='fas fa-trash'></p>Remove this car</a>  
-                    <a name='update'  href=\"newupdate.php?id=".$row['ID']."\" class='btn'><p class='fas fa-trash'></p> Update Car</a>                 
+                    <a name='update'  href=\"newupdate.php?id=".$row['ID']."\" class='btn'><p class='fas fa-trash'></p> Update Car</a>
+                    <a name='all'  href=\"allcarrent.php?id=".$row['ID']."\" class='btn'><p class='fas fa-user'></p> See all rents</a>                  
                 </div>   
                 </div>";
 
@@ -400,6 +428,7 @@ if ($addingError) {
     echo "<script type='text/javascript'>alert('$addingError');</script>";
 }
 ?>
+
 </body>
 <script src="../script.js"></script>
 <script src="admin.js"></script>

@@ -19,6 +19,13 @@ if ($connect->connect_error) {
 }
 $rentedCarQuery = "SELECT * from rented_car";
 $totalCarQuery = "SELECT * from car";
+$yeniloc= "SELECT * FROM location";
+$yeniloc2= "SELECT * FROM location";
+
+
+$newlocres=mysqli_query($connect,$yeniloc);
+$newlocres2=mysqli_query($connect,$yeniloc);
+
 
 $totalCustomerQuery = "SELECT * from customer";
 $rentedCarResult = mysqli_query($connect,$rentedCarQuery);
@@ -142,8 +149,8 @@ $connect = new mysqli($hostname, $username, $password, $databaseName);
                     </thead>
                     <tbody>
                 <?php
-                $sql="SELECT l.location,cc.totalPrice,cc.pick_up,cc.drop_off,cc.status,cu.name FROM car c,customer cu,location l,rented_Car cc 
-                WHERE c.ID=cc.car_id AND cu.ID=cc.custom_id AND l.ID=c.location_id ORDER BY cc.pick_up";
+                $sql="SELECT l.location,cc.totalPrice,cc.pick_up,cc.drop_off,cc.status,cu.name,cu.ID FROM car c,customer cu,location l,rented_Car cc 
+                WHERE c.ID=cc.car_id AND cu.ID=cc.custom_id AND cu.ID=cc.custom_id AND l.ID=c.location_id ORDER BY cc.pick_up";
                 $cars = $connect->query($sql);
                 if (!$cars) {
                     die("Invalid Query: " . $connect->error);
@@ -157,12 +164,29 @@ $connect = new mysqli($hostname, $username, $password, $databaseName);
                                   <td>" . $row['pick_up'] . "</td>
                                   <td>" . $row['drop_off'] . "</td>
                                   <td>" . $row['status'] . "</td>
+                                  <td> <a name='review'  href=\"allrents.php?id=".$row['ID']."\" class='btn'><p class='fas fa-bolt'></p>See Other Rents</a></td>
                                   </tr>";
                 }?>
                 </tbody>
                 </table>
+                <div class="inputBox">
+                    
+                    </div>
+                    <?php                  while ($row = $newlocres2->fetch_assoc()) {
+                    echo "
+                                 
+             
+                    
+                                   <a name='review'  href=\"alllocations.php?id=".$row['ID']."\" class='btn'><p class='fas fa-bolt'></p>See all booking on that location</a>
+                                  ";
+                                   echo $row['location']; 
+                                  
+                }
+                                 
+           ?>
             </div>
         </div>
+        
     </section>
     <section class="footer" >
 
